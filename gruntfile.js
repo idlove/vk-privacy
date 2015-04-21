@@ -6,7 +6,8 @@ module.exports = function(grunt) {
             },
 
             dist: {
-                src: ['build-templates/header.js','cryptico.min.js', 'base64.js', 'encryption.js', 'keykeeper.js', 'vk-privacy.js','build-templates/tail.js'],
+
+                src: ['build-templates/header.js','cryptico.min.js', 'encryption.js', 'base64.js', 'md5.min.js', 'cache.js','keykeeper.js', 'vk-privacy.js','build-templates/tail.js'],
                 dest: 'dist/vk-privacy.js'
             }
         }
