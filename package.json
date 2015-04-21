@@ -1,0 +1,23 @@
+{
+  "name": "vk-privacy",
+  "version": "1.0.0",
+  "description": "Take back your right for privacy in largest russian social network",
+  "main": "vk-privacy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/idlove/vk-privacy"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/idlove/vk-privacy/issues"
+  },
+  "homepage": "https://github.com/idlove/vk-privacy",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.1"
+  }
+}
