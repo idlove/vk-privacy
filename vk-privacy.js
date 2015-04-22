@@ -61,12 +61,11 @@ function readMessages() {
             console.log("Find this message in cache...")
 
             var message = getMessage(messageId);
-            console.log(message);
             if (message != false) {
                 console.log('Message has find in cache');
             } else {
                 console.log('Message not found in cache, try decrypt this message...');
-                var decryptText = Base64.decode(decryptMessage(sourceText, masterKey).plaintext);
+                var decryptText = Base64.decode(decryptMessage(sourceMessage, masterKey).plaintext);
                 console.log('Message has decrypt:' + decryptText);
                 message = decryptText;
             }
