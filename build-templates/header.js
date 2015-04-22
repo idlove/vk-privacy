@@ -1,8 +1,10 @@
 // ==UserScript==
-// @name Scald
+// @name        Scald
+// @namespace   root@localhost
 // @description Vkontakte privacy plugin
-// @author root@localhost
-// @include https://vk.com/im?sel*
+// @include     https://vk.com/im?sel=*
+// @version     1
+// @grant       none
 // ==/UserScript==
 
 (function() {

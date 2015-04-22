@@ -1,4 +1,5 @@
 console.log('Start VK Privacy');
+var encryptedSessionStarted = false;
 
 var opponentId = location.href.split('sel=')[1];
 var textElem = document.getElementById('im_editable' + opponentId);
@@ -31,6 +32,7 @@ observer.observe(target, config);
 
 console.log('Send my public key');
 sendMessage('[key]' + myPublicKey + '[/key]');
+encryptedSessionStarted = true;
 
 function sendHandler() {
     var text = textElem.textContent;
@@ -58,7 +60,7 @@ function readMessages() {
     {
         try {
             var msgText = msgElement.textContent;
-
+            var messageDecrypted = false;
             if (msgText.indexOf('[encrypt id="') == 0) {
                 var endIdIndex = msgText.indexOf('"]');
                 var endMessageIndex = msgText.indexOf('[/encrypt]');
@@ -75,8 +77,13 @@ function readMessages() {
                     var decryptText = Base64.decode(decryptMessage(sourceMessage, masterKey).plaintext);
                     console.log('Message has decrypt:' + decryptText);
                     message = decryptText;
+                    messageDecrypted = true;
                 }
                 msgElement.textContent = message;
+            }else{
+                if(encryptedSessionStarted == true && messageDecrypted == false){
+
+                }
             }
 
             if (msgText.indexOf('[key]') == 0) {
