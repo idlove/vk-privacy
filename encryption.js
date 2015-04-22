@@ -1,5 +1,5 @@
 /* Some shitty globals~ */
-const RSA_BITS = 1024;
+const RSA_BITS = 2048;
 
 
 function createPrimaryKey(){
