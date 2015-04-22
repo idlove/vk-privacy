@@ -21,7 +21,7 @@ function saveMessage(message){
 function getMessage(key){
     if(typeof key!=typeof undefined){
         if(typeof localStorage!=typeof undefined){
-            return localStorage.getItem(key);
+            return localStorage.getItem(key) == null ? false : localStorage.getItem(key);
         }
     }
 
