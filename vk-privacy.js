@@ -1,61 +1,36 @@
 console.log('Start VK Privacy');
 var encryptedSessionStarted = false;
 
-var opponentId = location.href.split('sel=')[1];
-var textElem = document.getElementById('im_editable' + opponentId);
-console.log('OpponentId:' + opponentId);
+var vkWrapper = new VkWrapper(sendHandler, messagesHandler);
 
 var masterKey = createPrimaryKey();
 var myPublicKey = getOwnPublicKey(masterKey);
 console.log('My Public key:' + myPublicKey);
 
-removeEvent(textElem, data(textElem, 'events').keyup);
-console.log('VK events has removes');
-
-textElem.onkeyup = function (event) {
-    if (event.keyCode == 13) {
-        sendHandler();
-    }
-}
-
-var sendButton = document.getElementById('im_send');
-sendButton.onclick = sendHandler;
-
-//Subscribe on message list changed
-var target = document.querySelector('#im_rows');
-var observer = new MutationObserver(function(mutations) {
-    readMessages();
-});
-
-var config = { attributes: true, childList: true, characterData: true };
-observer.observe(target, config);
-
 console.log('Send my public key');
-sendMessage('[key]' + myPublicKey + '[/key]');
+vkWrapper.sendMessage('[key]' + myPublicKey + '[/key]');
 encryptedSessionStarted = true;
 
-function sendHandler() {
-    var text = textElem.textContent;
+function sendHandler(text) {
     console.log('Original text:' + text);
 
     var messageId = saveMessage(text);
     console.log('Save this message in cache, with id:' + messageId);
 
-    var opponentPublicKey = getOpponentKey(opponentId);
+    var opponentPublicKey = getOpponentKey(vkWrapper.opponentId);
     if (opponentPublicKey == false) {
         if (confirm('Opponent public key not found! Message will not be encrypted. Send?')) {
-            sendMessage(text);
+            vkWrapper.sendMessage(text);
         }
     } else {
         var encryptText = encryptMessage(opponentPublicKey, Base64.encode(text)).cipher;
         console.log('Encrypt ' + text + ' to ' + encryptText);
-        sendMessage('[encrypt id="' + messageId + '"]' + encryptText + '[/encrypt]');
+        vkWrapper.sendMessage('[encrypt id="' + messageId + '"]' + encryptText + '[/encrypt]');
     }
 }
 
-function readMessages() {
+function messagesHandler(msgElements) {
     console.log('Start read messages');
-    var msgElements = document.getElementsByClassName('im_msg_text');
     for (msgElement of msgElements)
     {
         try {
@@ -67,8 +42,8 @@ function readMessages() {
                 var messageId = msgText.substring(13, endIdIndex);
                 var sourceMessage = msgText.substring(endIdIndex + 2, endMessageIndex);
                 console.log('Find encrypt message ' + sourceMessage + ' with id ' + messageId);
-                console.log("Find this message in cache...")
 
+                console.log("Find this message in cache...")
                 var message = getMessage(messageId);
                 if (message != false) {
                     console.log('Message has find in cache');
@@ -91,7 +66,7 @@ function readMessages() {
                 keyText = msgText.substring(5, endIndex);
                 if (keyText != myPublicKey) {
                     console.log('Find opponent key ' + keyText + ', saved...')
-                    saveOpponentKey(opponentId, keyText);
+                    saveOpponentKey(vkWrapper.opponentId, keyText);
                 }
             }
         } catch(e) {
@@ -100,11 +75,6 @@ function readMessages() {
     }
 }
 
-function sendMessage(message) {
-    textElem.textContent = message;
-    IM.send();
-    console.log('Message ' + message + ' has send!');
-}
 
 
 
